@@ -56,14 +56,19 @@ public class ObstaclesControllerScript : MonoBehaviour
             }
         }
 
+        Vector2 inputPosition;
+        if(!TryGetInputPosition(out inputPosition))
+            return;
+
+        
         if (CompareTag("Bomb") && !isExploding &&
-            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, Camera.main))
+            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, inputPosition, Camera.main))
         {
             TriggerExplosion();
         }
 
         if (ObjectScript.drag && !isFadingOut &&
-            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, Input.mousePosition, Camera.main))
+            RectTransformUtility.RectangleContainsScreenPoint(rectTransform, inputPosition, Camera.main))
         {
             if (ObjectScript.lastDragged != null)
             {
@@ -78,6 +83,30 @@ public class ObstaclesControllerScript : MonoBehaviour
             else
                 StartToDestroy(Color.cyan);
         }
+    }
+
+    bool TryGetInputPosition(out Vector2 position)
+    {
+        #if UNITY_EDITOR || UNITY_STANDALONE
+            position = Input.mousePosition;
+            return true;
+
+        #elif UNITY_ANDROID
+            if (Input.touchCount > 0)
+            {
+                position = Input.GetTouch(0).position;
+                return true;
+            }
+            else
+            {
+                position = Vector2.zero;
+                return false;
+            }
+
+        #else
+            position = Vector2.zero;
+               return false;
+        #endif
     }
 
     public void TriggerExplosion()
@@ -203,6 +232,11 @@ public class ObstaclesControllerScript : MonoBehaviour
 
     IEnumerator Vibrate()
     {
+#if UNITY_ANDROID
+        Handheld.Vibrate();
+#endif
+
+
         Vector2 originalPosition = rectTransform.anchoredPosition;
         float duration = 0.3f;
         float elapsed = 0f;

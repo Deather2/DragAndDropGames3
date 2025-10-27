@@ -34,5 +34,7 @@ Development checklist:
 - [x] Create C# script for scene change and quit option
 - [x] Create game timer (HH:MM:SS)
 - [x] Add flying obstacle in a city scene
+- [ ] Change target platform to Android
+- [ ] Replace all mouse input with touch
 
 Created by Artjoms
