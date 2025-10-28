@@ -3142,7 +3142,14 @@ MonoBehaviour:
   maxX: 0
   minY: 0
   maxY: 0
+  worldBounds:
+    serializedVersion: 2
+    x: -960
+    y: -540
+    width: 1920
+    height: 1080
   padding: 0.02
+  targetCam: {fileID: 0}
 --- !u!114 &1310376413
 MonoBehaviour:
   m_ObjectHideFlags: 0
