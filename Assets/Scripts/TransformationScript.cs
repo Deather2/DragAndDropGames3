@@ -23,16 +23,16 @@ public class TransformationScript : MonoBehaviour
         if (rotateCCW)
             rt.Rotate(0, 0, rotationSpeed * Time.deltaTime);
 
-        if (scaleUpY && rt.localScale.y < 0.8f)
+        if (scaleUpY && rt.localScale.y < 1.2f)
             rt.localScale += new Vector3(0, scaleSpeed * Time.deltaTime, 0);
 
-        if(scaleDownY && rt.localScale.y > 0.35f)
+        if(scaleDownY && rt.localScale.y > 0.2f)
             rt.localScale -= new Vector3(0, scaleSpeed * Time.deltaTime, 0);
 
-        if(scaleUpX && rt.localScale.x < 0.8f)
+        if(scaleUpX && rt.localScale.x < 1.2f)
             rt.localScale += new Vector3(scaleSpeed * Time.deltaTime, 0, 0);
 
-        if(scaleDownX && rt.localScale.x > 0.35f)
+        if(scaleDownX && rt.localScale.x > 0.2f)
             rt.localScale -= new Vector3(scaleSpeed * Time.deltaTime, 0, 0);
 
         isTransforming = rotateCW || rotateCCW || scaleUpY || scaleDownY || scaleUpX || scaleDownX;

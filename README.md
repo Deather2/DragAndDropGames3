@@ -34,7 +34,11 @@ Development checklist:
 - [x] Create C# script for scene change and quit option
 - [x] Create game timer (HH:MM:SS)
 - [x] Add flying obstacle in a city scene
-- [ ] Change target platform to Android
+- [x] Change target platform to Android
 - [ ] Replace all mouse input with touch
+- [x] Fix camera max zoom
+- [ ] Add interstitial ad
+- [ ] Add rewarded ad
+- [ ] Add banner ad
 
 Created by Artjoms
