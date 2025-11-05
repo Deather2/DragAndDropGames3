@@ -25,9 +25,13 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
     {
         if (eventData.pointerDrag == null)
             return;
+        var draggedRect = eventData.pointerDrag.GetComponent<RectTransform>();
 
+
+        // Проверяем совпадают ли теги (машина на своей тени или на чужой)
         if (eventData.pointerDrag.tag.Equals(tag))
         {
+            // МАШИНА НА СВОЕЙ ТЕНИ - проверяем точность
             placeZRot = eventData.pointerDrag.GetComponent<RectTransform>().transform.eulerAngles.z;
             vehicleZRot = GetComponent<RectTransform>().transform.eulerAngles.z;
             rotDiff = Mathf.Abs(placeZRot - vehicleZRot);
@@ -40,14 +44,16 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
             Debug.Log("X size difference: " + xSizeDiff);
             Debug.Log("Y size difference: " + ySizeDiff);
 
+            // Если ротация И масштаб совпадают - ПРАВИЛЬНАЯ установка
             if ((rotDiff <= 5 || (rotDiff >= 355 && rotDiff <= 360)) && (xSizeDiff <= 0.1f && ySizeDiff <= 0.1f))
             {
-                Debug.Log("Correct place");
+                Debug.Log("Correct place - perfect match!");
                 objScript.rightPlace = true;
 
                 var dragRect = eventData.pointerDrag.GetComponent<RectTransform>();
                 var placeRect = GetComponent<RectTransform>();
 
+                // Идеально выравниваем машину с тенью
                 dragRect.anchoredPosition = placeRect.anchoredPosition;
                 dragRect.localRotation = placeRect.localRotation;
                 dragRect.localScale = placeRect.localScale;
@@ -58,97 +64,79 @@ public class DropPlaceScript : MonoBehaviour, IDropHandler
                     objScript.PlaceVehicle(index);
                 }
 
-                switch (eventData.pointerDrag.tag)
-                {
-                    case "Garbage":
-                        objScript.effects.PlayOneShot(objScript.audioCli[2]);
-                        break;
-                    case "Medicine":
-                        objScript.effects.PlayOneShot(objScript.audioCli[3]);
-                        break;
-                    case "Fire":
-                        objScript.effects.PlayOneShot(objScript.audioCli[4]);
-                        break;
-                    case "Bus":
-                        objScript.effects.PlayOneShot(objScript.audioCli[5]);
-                        break;
-                    case "b2":
-                        objScript.effects.PlayOneShot(objScript.audioCli[6]);
-                        break;
-                    case "Cement":
-                        objScript.effects.PlayOneShot(objScript.audioCli[7]);
-                        break;
-                    case "E46":
-                        objScript.effects.PlayOneShot(objScript.audioCli[8]);
-                        break;
-                    case "E61":
-                        objScript.effects.PlayOneShot(objScript.audioCli[9]);
-                        break;
-                    case "Excavator":
-                        objScript.effects.PlayOneShot(objScript.audioCli[10]);
-                        break;
-                    case "Police":
-                        objScript.effects.PlayOneShot(objScript.audioCli[11]);
-                        break;
-                    case "Tractor1":
-                        objScript.effects.PlayOneShot(objScript.audioCli[12]);
-                        break;
-                    case "Tractor2":
-                        objScript.effects.PlayOneShot(objScript.audioCli[13]);
-                        break;
-                    default:
-                        Debug.Log("Unknown tag detected");
-                        break;
-                }
+                // Играем звук ПРАВИЛЬНОЙ установки
+                PlayCorrectSound(eventData.pointerDrag.tag);
             }
             else
             {
+                // Машина на своей тени, но ротация/масштаб не совпадают
+                // Машина остается где упала, НО не засчитывается как правильно установленная
+                Debug.Log("On correct shadow but rotation/scale mismatch - stays but not completed");
                 objScript.rightPlace = false;
-                objScript.effects.PlayOneShot(objScript.audioCli[1]);
-
-                switch (eventData.pointerDrag.tag)
-                {
-                    case "Garbage":
-                        objScript.vehicles[0].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[0];
-                        break;
-                    case "Medicine":
-                        objScript.vehicles[1].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[1];
-                        break;
-                    case "Fire":
-                        objScript.vehicles[2].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[2];
-                        break;
-                    case "Bus":
-                        objScript.vehicles[3].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[3];
-                        break;
-                    case "b2":
-                        objScript.vehicles[4].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[4];
-                        break;
-                    case "Cement":
-                        objScript.vehicles[5].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[5];
-                        break;
-                    case "E46":
-                        objScript.vehicles[6].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[6];
-                        break;
-                    case "E61":
-                        objScript.vehicles[7].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[7];
-                        break;
-                    case "Excavator":
-                        objScript.vehicles[8].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[8];
-                        break;
-                    case "Police":
-                        objScript.vehicles[9].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[9];
-                        break;
-                    case "Tractor1":
-                        objScript.vehicles[10].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[10];
-                        break;
-                    case "Tractor2":
-                        objScript.vehicles[11].GetComponent<RectTransform>().localPosition = objScript.startCoordinates[11];
-                        break;
-                    default:
-                        Debug.Log("Unknown tag detected");
-                        break;
-                }
+                // Звука НЕТ - машина просто остается где есть
             }
+        }
+        else
+        {
+            // МАШИНА НА ЧУЖОЙ ТЕНИ (теги не совпадают)
+            Debug.Log("Wrong shadow - returning to start");
+            objScript.rightPlace = false;
+
+            // Играем звук ОШИБКИ
+            objScript.effects.PlayOneShot(objScript.audioCli[1]);
+
+            // Возвращаем машину на стартовые координаты
+            int index = System.Array.IndexOf(objScript.vehicles, eventData.pointerDrag);
+            if (index != -1)
+            {
+                draggedRect.localPosition = objScript.startCoordinates[index];
+            }
+        }
+    }
+
+    private void PlayCorrectSound(string tag)
+    {
+        switch (tag)
+        {
+            case "Garbage":
+                objScript.effects.PlayOneShot(objScript.audioCli[2]);
+                break;
+            case "Medicine":
+                objScript.effects.PlayOneShot(objScript.audioCli[3]);
+                break;
+            case "Fire":
+                objScript.effects.PlayOneShot(objScript.audioCli[4]);
+                break;
+            case "Bus":
+                objScript.effects.PlayOneShot(objScript.audioCli[5]);
+                break;
+            case "b2":
+                objScript.effects.PlayOneShot(objScript.audioCli[6]);
+                break;
+            case "Cement":
+                objScript.effects.PlayOneShot(objScript.audioCli[7]);
+                break;
+            case "E46":
+                objScript.effects.PlayOneShot(objScript.audioCli[8]);
+                break;
+            case "E61":
+                objScript.effects.PlayOneShot(objScript.audioCli[9]);
+                break;
+            case "Excavator":
+                objScript.effects.PlayOneShot(objScript.audioCli[10]);
+                break;
+            case "Police":
+                objScript.effects.PlayOneShot(objScript.audioCli[11]);
+                break;
+            case "Tractor1":
+                objScript.effects.PlayOneShot(objScript.audioCli[12]);
+                break;
+            case "Tractor2":
+                objScript.effects.PlayOneShot(objScript.audioCli[13]);
+                break;
+            default:
+                Debug.Log("Unknown tag detected");
+                break;
         }
     }
 
