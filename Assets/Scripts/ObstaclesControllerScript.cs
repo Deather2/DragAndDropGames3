@@ -48,8 +48,8 @@ public class ObstaclesControllerScript : MonoBehaviour
 
         if (!isFadingOut)
         {
-            if ((speed > 0 && transform.position.x < screenBoundriesScript.minX + 80) ||
-                (speed < 0 && transform.position.x > screenBoundriesScript.maxX - 80))
+            if ((speed > 0 && transform.position.x < screenBoundriesScript.worldBounds.xMin + 80) ||
+                (speed < 0 && transform.position.x > screenBoundriesScript.worldBounds.xMax - 80))
             {
                 isFadingOut = true;
                 StartCoroutine(FadeOutAndDestroy());

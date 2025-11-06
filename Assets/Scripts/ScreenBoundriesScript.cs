@@ -8,7 +8,7 @@ public class ScreenBoundriesScript : MonoBehaviour
     [HideInInspector]
     public float minX, maxX, minY, maxY;
 
-    public Rect worldBounds = new Rect(-960, -540, 1920, 1080);
+    public Rect worldBounds = new Rect(-1600, -1000, 3200, 2000);
     [Range(0f, 0.5f)]
     public float padding = 0.02f;
 

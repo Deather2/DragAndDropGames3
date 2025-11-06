@@ -20,6 +20,9 @@ public class ObstaclesSpawnScript : MonoBehaviour
 
     void Start()
     {
+        ScreenBoundriesScript screenBoundriesScript = FindFirstObjectByType<ScreenBoundriesScript>();
+        minY = screenBoundriesScript.worldBounds.yMin;
+        maxY = screenBoundriesScript.worldBounds.yMax;
         InvokeRepeating(nameof(SpawnCloud), 0f, cloudSpawnInterval);
         InvokeRepeating(nameof(SpawnObstacle), 0f, obstacleSpawnInterval);
     }
