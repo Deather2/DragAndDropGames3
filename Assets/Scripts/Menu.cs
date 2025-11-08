@@ -23,6 +23,7 @@ public class Menu : MonoBehaviour
     {
         if (previousSceneIndex >= 0 && previousSceneIndex < SceneManager.sceneCountInBuildSettings)
         {
+            Time.timeScale = 1f;
             SceneManager.LoadScene(previousSceneIndex);
         }
     }
