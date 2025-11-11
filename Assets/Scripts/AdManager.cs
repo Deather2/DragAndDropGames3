@@ -7,28 +7,32 @@ public class AdManager : MonoBehaviour
     public AdsInitializer adsInitializer;
     public InterstitialAds interstitialAd;
     [SerializeField] bool turnOffInterstitialAd = false;
-    private bool firstAdShown = false;
 
-    // .......
+    private bool isFirstLaunch = true; 
+    private string previousSceneName = "";
 
     public static AdManager Instance { get; private set; }
 
     private void Awake()
     {
-        if(adsInitializer == null)
-        {
-            adsInitializer = FindFirstObjectByType<AdsInitializer>();
-        }
-
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
 
         Instance = this;
-
         DontDestroyOnLoad(gameObject);
+
+        if (adsInitializer == null)
+        {
+            adsInitializer = GetComponent<AdsInitializer>();
+        }
+
+        if (interstitialAd == null)
+        {
+            interstitialAd = GetComponent<InterstitialAds>();
+        }
 
         adsInitializer.OnAdsInitialized += HandleAdsInitialized;
     }
@@ -37,22 +41,7 @@ public class AdManager : MonoBehaviour
     {
         if (!turnOffInterstitialAd)
         {
-            interstitialAd.OnInterstitialAdReady += HandleInterstitialAdReady;
             interstitialAd.LoadAd();
-        }
-    }
-
-    private void HandleInterstitialAdReady()
-    {
-        if(!firstAdShown)
-        {
-            Debug.Log("Showing first time interstitial ad automatically!");
-            interstitialAd.ShowAd();
-            firstAdShown = true;
-        }
-        else
-        {
-            Debug.Log("Next interstitial ad is ready for manual show!");
         }
     }
 
@@ -66,27 +55,47 @@ public class AdManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
-    private bool firstSceneLoad = false;
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if(interstitialAd == null)
-            interstitialAd = FindFirstObjectByType<InterstitialAds>();
-
-        Button interstitialButton = GameObject.FindGameObjectWithTag("InterstitialAdButton").GetComponent<Button>();
-
-        if(interstitialAd != null && interstitialButton != null)
+        if (isFirstLaunch)
         {
-            interstitialAd.SetButton(interstitialButton);
-        }
-
-        if(!firstSceneLoad)
-        {
-            firstSceneLoad = true;
-            Debug.Log("First time scene loaded!");
+            isFirstLaunch = false;
+            previousSceneName = scene.name;
+            Debug.Log("First launch, no ad shown");
             return;
         }
 
-        Debug.Log("Scene loaded!");
-        HandleAdsInitialized();
+        if (previousSceneName != scene.name)
+        {
+            Debug.Log($"Scene changed from {previousSceneName} to {scene.name}, showing ad");
+
+            if (interstitialAd != null && interstitialAd.isReady)
+            {
+                interstitialAd.ShowAd();
+            }
+            else
+            {
+                Debug.Log("Ad not ready, loading...");
+                HandleAdsInitialized();
+            }
+        }
+
+        previousSceneName = scene.name;
+
+        SetupAdButtonIfExists();
+    }
+
+    private void SetupAdButtonIfExists()
+    {
+        GameObject buttonObj = GameObject.FindGameObjectWithTag("InterstitialAdButton");
+        if (buttonObj != null)
+        {
+            Button interstitialButton = buttonObj.GetComponent<Button>();
+            if (interstitialButton != null && interstitialAd != null)
+            {
+                interstitialAd.SetButton(interstitialButton);
+                Debug.Log("Ad button found and configured");
+            }
+        }
     }
 }
