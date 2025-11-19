@@ -1465,6 +1465,9 @@ GameObject:
   - component: {fileID: 1654001222}
   - component: {fileID: 1654001221}
   - component: {fileID: 1654001220}
+  - component: {fileID: 1654001224}
+  - component: {fileID: 1654001225}
+  - component: {fileID: 1654001226}
   m_Layer: 0
   m_Name: Ads
   m_TagString: Untagged
@@ -1517,6 +1520,10 @@ MonoBehaviour:
   adsInitializer: {fileID: 1654001221}
   interstitialAd: {fileID: 1654001220}
   turnOffInterstitialAd: 0
+  rewardedAds: {fileID: 1654001224}
+  turnOffRewardedAd: 0
+  bannerAd: {fileID: 0}
+  turnOffBannerAd: 0
 --- !u!4 &1654001223
 Transform:
   m_ObjectHideFlags: 0
@@ -1532,6 +1539,49 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1654001224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654001219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b58088524b984d94199b5afc096fcff5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _androidAdUnitId: Rewarded_Android
+  _rewardedAdButton: {fileID: 0}
+  flyingObjectManager: {fileID: 0}
+--- !u!114 &1654001225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654001219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17261b3c744b378438670ed47568813b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1654001226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1654001219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddb79115e74a074b859239d6fc5036f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _androidAdUnitId: Banner_Android
+  _bannerButton: {fileID: 0}
+  isBannerVisible: 0
+  _bannerPosition: 4
 --- !u!1 &1826395659
 GameObject:
   m_ObjectHideFlags: 0

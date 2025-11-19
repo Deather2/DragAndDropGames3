@@ -18,6 +18,8 @@ TagManager:
   - Tractor2
   - Bomb
   - InterstitialAdButton
+  - RewardedButton
+  - BannerButton
   layers:
   - Default
   - TransparentFX

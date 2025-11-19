@@ -35,9 +35,9 @@ Development checklist:
 - [x] Create game timer (HH:MM:SS)
 - [x] Add flying obstacle in a city scene
 - [x] Change target platform to Android
-- [ ] Replace all mouse input with touch
+- [x] Replace all mouse input with touch
 - [x] Fix camera max zoom
-- [ ] Add interstitial ad
+- [x] Add interstitial ad
 - [ ] Add rewarded ad
 - [ ] Add banner ad
 
