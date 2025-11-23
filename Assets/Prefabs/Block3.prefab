@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2162633001695655625}
   - component: {fileID: 7045921675795510569}
   - component: {fileID: 1860610390530998053}
+  - component: {fileID: 6506069228487453633}
   m_Layer: 0
   m_Name: Block3
   m_TagString: Block
@@ -175,3 +176,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6392954168a1d0b4584f8a664914f9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6506069228487453633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2629079348118429482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02aeba35cc790074ebcb20657b395cd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  size: 4
+  currentTower: {fileID: 0}
