@@ -38,7 +38,12 @@ Development checklist:
 - [x] Replace all mouse input with touch
 - [x] Fix camera max zoom
 - [x] Add interstitial ad
-- [ ] Add rewarded ad
-- [ ] Add banner ad
+- [x] Add rewarded ad
+- [x] Add banner ad
+- [x] Create a third branch and scene
+- [x] Create game physics
+- [x] Spawn 6 blocks in random for 3 towers
+- [x] Create game logic for winning and loses
+- [x] Add ads
 
 Created by Artjoms
