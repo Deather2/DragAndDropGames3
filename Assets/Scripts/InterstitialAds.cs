@@ -14,6 +14,7 @@ public class InterstitialAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
     [SerializeField] Button _interstitialAdButton;
 
     [SerializeField] private string rewardSceneName = "CityScene";
+    [SerializeField] private string rewardSceneName2 = "HanojasTornis";
 
     void Awake()
     {
@@ -108,13 +109,19 @@ public class InterstitialAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         {
             Debug.Log("Interstitial ad watched completely!");
 
-            if (SceneManager.GetActiveScene().name == rewardSceneName)
+            string scene = SceneManager.GetActiveScene().name;
+
+            if (scene == rewardSceneName)
+            {
+                StartCoroutine(SlowDownTimeTemporarily(30f));
+            }
+            else if (scene == "HanojasTornis")
             {
                 StartCoroutine(SlowDownTimeTemporarily(30f));
             }
             else
             {
-                Debug.Log("Not on reward scene, no time slowdown");
+                Debug.Log("Not a reward scene, no time slowdown");
             }
         }
         else if (showCompletionState == UnityAdsShowCompletionState.SKIPPED)
@@ -128,6 +135,7 @@ public class InterstitialAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
 
         LoadAd();
     }
+
 
     private IEnumerator SlowDownTimeTemporarily(float seconds)
     {

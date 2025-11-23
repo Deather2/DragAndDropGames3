@@ -83,6 +83,13 @@ public class AdManager : MonoBehaviour
 
         Button rewardedAdButton = GameObject.FindGameObjectWithTag("RewardedButton")?.GetComponent<Button>();
 
+        if (scene.name == "MainMenu")
+        {
+            if (bannerAd != null)
+            {
+                bannerAd.HideBannerAd();
+            }
+        }
 
         if (rewardedAdButton != null && rewardedAds != null)
         {

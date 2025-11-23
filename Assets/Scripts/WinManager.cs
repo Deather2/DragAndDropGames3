@@ -15,6 +15,8 @@ public class WinManager : MonoBehaviour
     public UnityEngine.UI.Text timeText1;
     public UnityEngine.UI.Text timeText2;
     public UnityEngine.UI.Text timeText3;
+    public AudioSource winMusic;
+    public AudioClip winSound;
 
     public float timer;
     public bool finished = false;
@@ -58,7 +60,18 @@ public class WinManager : MonoBehaviour
     void Win()
     {
         finished = true;
+
+        if (winMusic != null && winSound != null)
+        {
+            winMusic.ignoreListenerPause = true;
+            winMusic.PlayOneShot(winSound);
+        }
+
         Time.timeScale = 0f;
+
+        GameManager.Instance.rewardedButton.SetActive(false);
+        GameManager.Instance.bannerButton.SetActive(false);
+        GameManager.Instance.interstitialButton.SetActive(false);
 
         string formatted = FormatTime(timer);
 
@@ -78,6 +91,7 @@ public class WinManager : MonoBehaviour
             timeText1.text = formatted;
         }
     }
+
 
     string FormatTime(float t)
     {

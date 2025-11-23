@@ -926,6 +926,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &773532412
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 773532414}
+  - component: {fileID: 773532413}
+  m_Layer: 0
+  m_Name: Orientation
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &773532413
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773532412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95bd39c654b6c6d41b1a31b2615485b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &773532414
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 773532412}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -151.13039, y: 1112.991, z: -4.8599935}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1097491729
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,6 +1535,7 @@ MonoBehaviour:
   isReady: 0
   _interstitialAdButton: {fileID: 0}
   rewardSceneName: CityScene
+  rewardSceneName2: HanojasTornis
 --- !u!114 &1654001221
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1519,7 +1564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adsInitializer: {fileID: 1654001221}
   interstitialAd: {fileID: 1654001220}
-  turnOffInterstitialAd: 0
+  turnOffInterstitialAd: 1
   rewardedAds: {fileID: 1654001224}
   turnOffRewardedAd: 0
   bannerAd: {fileID: 0}
@@ -1831,3 +1876,4 @@ SceneRoots:
   - {fileID: 699692953}
   - {fileID: 1344583430}
   - {fileID: 1654001223}
+  - {fileID: 773532414}

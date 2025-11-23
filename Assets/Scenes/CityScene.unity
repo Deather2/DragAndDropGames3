@@ -454,7 +454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -200, y: 200}
+  m_AnchoredPosition: {x: -200, y: 400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &137625660
@@ -3023,7 +3023,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 200, y: 200}
+  m_AnchoredPosition: {x: 200, y: 400}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1023039142
@@ -4018,6 +4018,9 @@ MonoBehaviour:
   - {fileID: 299838326}
   - {fileID: 1023039144}
   victoryTimeText: {fileID: 475317640}
+  rewardedButton: {fileID: 181717964}
+  bannerButton: {fileID: 1176326503}
+  interstitialButton: {fileID: 1324502229}
 --- !u!4 &1310376411
 Transform:
   m_ObjectHideFlags: 0

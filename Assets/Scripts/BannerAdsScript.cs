@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class BannerAdsScript : MonoBehaviour
 {
@@ -10,82 +11,71 @@ public class BannerAdsScript : MonoBehaviour
     [SerializeField] Button _bannerButton;
     public bool isBannerVisible = false;
 
-    [SerializeField] BannerPosition _bannerPosition = BannerPosition.BOTTOM_CENTER;
-
     private void Awake()
     {
         _adUnitId = _androidAdUnitId;
-        Advertisement.Banner.SetPosition(_bannerPosition);
+    }
+
+    void SetBannerPositionForScene()
+    {
+        string scene = SceneManager.GetActiveScene().name;
+
+        if (scene == "CityScene")
+            Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
+
+        else if (scene == "HanojasTornis") 
+            Advertisement.Banner.SetPosition(BannerPosition.TOP_CENTER);
+
+        else
+            Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
     }
 
     public void LoadBanner()
     {
         if (!Advertisement.isInitialized)
-        {
-            Debug.Log("Tried to load banner ad before Unity ads was initialized!");
             return;
-        }
 
-        Debug.Log("Loading banner ad!");
         BannerLoadOptions options = new BannerLoadOptions
         {
-            loadCallback = OnBannerLoaded,
-            errorCallback = OnBannerError
+            loadCallback = () =>
+            {
+                if (_bannerButton != null)
+                    _bannerButton.interactable = true;
+            }
         };
 
         Advertisement.Banner.Load(_adUnitId, options);
-    }
-
-    void OnBannerLoaded()
-    {
-        Debug.Log("Banner ad loaded!");
-        _bannerButton.interactable = true;
-    }
-
-    void OnBannerError(string message)
-    {
-        Debug.LogWarning("Failed to load banner ad: " + message);
-        LoadBanner();
     }
 
     public void ShowBannerAd()
     {
         if (isBannerVisible)
         {
-            HideBannerAd();
-        } else
-        {
-            BannerOptions options = new BannerOptions
-            {
-                clickCallback = OnBannerClicked,
-                hideCallback = OnBannerHidden,
-                showCallback = OnBannerShown
-            };
-
-            Advertisement.Banner.Show(_adUnitId, options);
+            Advertisement.Banner.Hide(false);
+            isBannerVisible = false;
+            return;
         }
+
+        Advertisement.Banner.Hide(true); 
+
+        SetBannerPositionForScene(); 
+
+        BannerLoadOptions loadOpts = new BannerLoadOptions
+        {
+            loadCallback = () =>
+            {
+                Advertisement.Banner.Show(_adUnitId, new BannerOptions());
+                isBannerVisible = true;
+            }
+        };
+
+        Advertisement.Banner.Load(_adUnitId, loadOpts);
     }
 
     public void HideBannerAd()
     {
-        Advertisement.Banner.Hide();
-    }
-
-    void OnBannerClicked()
-    {
-        Debug.Log("User clicked on banner ad!");
-    }
-
-    void OnBannerHidden()
-    {
-        Debug.Log("Banner is hidden!");
+        Advertisement.Banner.Hide(false);
         isBannerVisible = false;
-    }
-
-    void OnBannerShown()
-    {
-        Debug.Log("Banner is shown!");
-        isBannerVisible = true;
     }
 
     public void SetButton(Button button)
@@ -93,9 +83,9 @@ public class BannerAdsScript : MonoBehaviour
         if (button == null)
             return;
 
-        button.onClick.RemoveAllListeners();
-        button.onClick.AddListener(ShowBannerAd);
         _bannerButton = button;
+        _bannerButton.onClick.RemoveAllListeners();
+        _bannerButton.onClick.AddListener(ShowBannerAd);
         _bannerButton.interactable = false;
     }
 }

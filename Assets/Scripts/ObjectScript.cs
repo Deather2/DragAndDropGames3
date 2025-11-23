@@ -33,6 +33,10 @@ public class ObjectScript : MonoBehaviour
     public Image[] stars;
     public TMP_Text victoryTimeText;
 
+    public GameObject rewardedButton;
+    public GameObject bannerButton;
+    public GameObject interstitialButton;
+
     void Awake()
     {
         timer = GetComponent<Timer>();
@@ -96,62 +100,57 @@ public class ObjectScript : MonoBehaviour
                 starCount = 2;
             else if (time < 480f)
                 starCount = 1;
-            else
-                starCount = 0;
 
             for (int i = 0; i < stars.Length; i++)
-            {
                 stars[i].enabled = (i < starCount);
-            }
 
             int hours = Mathf.FloorToInt(time / 3600);
             int minutes = Mathf.FloorToInt((time % 3600) / 60);
             int seconds = Mathf.FloorToInt(time % 60);
 
             if (victoryTimeText != null)
-            {
                 victoryTimeText.text = string.Format("Time: {0:00}:{1:00}:{2:00}", hours, minutes, seconds);
-            }
-            else
-            {
-                Debug.LogError("VictoryTimeText is null!");
-            }
-        }
-        else
-        {
-            Debug.LogError("Timer is null, cannot show victory time!");
         }
 
+        if (rewardedButton != null)
+            rewardedButton.SetActive(false);
+
+        if (bannerButton != null)
+            bannerButton.SetActive(false);
+
+        if (interstitialButton != null)
+            interstitialButton.SetActive(false);
+
         if (victoryPanel != null)
-        {
             victoryPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("VictoryPanel is null!");
-        }
 
         gameEnded = true;
         Time.timeScale = 0f;
     }
+
+
+
 
     public void ShowDefeat()
     {
         if (timer != null)
-        {
             timer.StopTimer();
-        }
+
+        if (rewardedButton != null)
+            rewardedButton.SetActive(false);
+
+        if (bannerButton != null)
+            bannerButton.SetActive(false);
+
+        if (interstitialButton != null)
+            interstitialButton.SetActive(false);
 
         if (defeatPanel != null)
-        {
             defeatPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.LogError("DefeatPanel is null!");
-        }
 
         gameEnded = true;
         Time.timeScale = 0f;
     }
+
+
 }

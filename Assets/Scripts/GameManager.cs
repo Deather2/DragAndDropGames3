@@ -8,6 +8,10 @@ public class GameManager : MonoBehaviour
     public GameObject losePanel;
     public bool gameOver = false;
 
+    public GameObject rewardedButton;
+    public GameObject bannerButton;
+    public GameObject interstitialButton;
+
     void Awake()
     {
         Instance = this;
@@ -17,6 +21,10 @@ public class GameManager : MonoBehaviour
     {
         if (gameOver) return;
         gameOver = true;
+
+        rewardedButton.SetActive(false);
+        bannerButton.SetActive(false);
+        interstitialButton.SetActive(false);
 
         Time.timeScale = 0f;
         losePanel.SetActive(true);

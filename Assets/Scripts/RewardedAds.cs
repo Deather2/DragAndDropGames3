@@ -2,6 +2,7 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Advertisements;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
@@ -74,16 +75,36 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     public void OnUnityAdsShowComplete(string placementId, UnityAdsShowCompletionState showCompletionState)
     {
-        if(placementId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
+        if (placementId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             Debug.Log("Rewarded ad completed!");
-            flyingObjectManager.DestroyAllFlyingObjects();
+
+            string scene = SceneManager.GetActiveScene().name;
+
+            if (scene == "CityScene")
+            {
+                flyingObjectManager.DestroyAllFlyingObjects();
+            }
+            else if (scene == "HanojasTornis")
+            {
+                if (WinManager.Instance != null)
+                {
+                    WinManager.Instance.timer -= 10f;
+
+                    if (WinManager.Instance.timer < 0)
+                        WinManager.Instance.timer = 0;
+
+                    Debug.Log("Reward applied: -10 seconds in HanojasTornis");
+                }
+            }
+
             _rewardedAdButton.interactable = false;
             StartCoroutine(WaitAndLoad(10f));
         }
 
         Time.timeScale = 1f;
     }
+
 
     public void SetButton(Button button)
     {
