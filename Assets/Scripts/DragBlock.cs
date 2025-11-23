@@ -14,7 +14,6 @@ public class DragBlock : MonoBehaviour
     void OnMouseDown()
     {
         if (GameManager.Instance.gameOver) return;
-
         dragging = true;
         rb.gravityScale = 0;
         rb.velocity = Vector2.zero;
