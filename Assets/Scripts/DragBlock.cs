@@ -6,15 +6,18 @@ public class DragBlock : MonoBehaviour
     private bool dragging = false;
     private Rigidbody2D rb;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
     }
 
     void OnMouseDown()
     {
+        if (GameManager.Instance.gameOver) return;
+
         dragging = true;
-        rb.gravityScale = 0; 
+        rb.gravityScale = 0;
+        rb.velocity = Vector2.zero;
         offset = transform.position - GetMouseWorld();
     }
 
@@ -26,6 +29,8 @@ public class DragBlock : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.gameOver) return;
+
         if (dragging)
         {
             Vector3 pos = GetMouseWorld() + offset;
@@ -36,13 +41,23 @@ public class DragBlock : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Floor"))
+        if (collision == null || collision.gameObject == null)
+            return;
+
+        if (!dragging && rb.velocity.y < 0.01f)
         {
-            Transform snap = collision.transform.GetChild(0); 
-            if (snap != null)
+            if (collision.gameObject.CompareTag("Floor"))
             {
-                transform.position = new Vector3(snap.position.x, transform.position.y, transform.position.z);
-                Debug.Log("Block snapped to X=" + snap.position.x);
+                float targetX = collision.transform.position.x;
+                transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+            }
+            else if (collision.gameObject.CompareTag("Block"))
+            {
+                if (transform.position.y > collision.transform.position.y)
+                {
+                    float targetX = collision.transform.position.x;
+                    transform.position = new Vector3(targetX, transform.position.y, transform.position.z);
+                }
             }
         }
     }
@@ -50,7 +65,7 @@ public class DragBlock : MonoBehaviour
     Vector3 GetMouseWorld()
     {
         Vector3 mouse = Input.mousePosition;
-        mouse.z = 10; 
+        mouse.z = 10;
         return Camera.main.ScreenToWorldPoint(mouse);
     }
 }
