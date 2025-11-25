@@ -1564,7 +1564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   adsInitializer: {fileID: 1654001221}
   interstitialAd: {fileID: 1654001220}
-  turnOffInterstitialAd: 1
+  turnOffInterstitialAd: 0
   rewardedAds: {fileID: 1654001224}
   turnOffRewardedAd: 0
   bannerAd: {fileID: 0}
@@ -1626,7 +1626,6 @@ MonoBehaviour:
   _androidAdUnitId: Banner_Android
   _bannerButton: {fileID: 0}
   isBannerVisible: 0
-  _bannerPosition: 4
 --- !u!1 &1826395659
 GameObject:
   m_ObjectHideFlags: 0

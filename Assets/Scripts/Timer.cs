@@ -1,20 +1,24 @@
 using UnityEngine;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    public Text timerText;  
-    public float elapsedTime { get; private set; }  
+    public Text timerText;
+    public float elapsedTime { get; private set; }
 
     void Start()
     {
-        ResetTimer();  
+        ResetTimer();
     }
 
     private void Update()
     {
         elapsedTime += Time.deltaTime;
+        UpdateTimerDisplay();
+    }
 
+    private void UpdateTimerDisplay()
+    {
         int hours = Mathf.FloorToInt(elapsedTime / 3600);
         int minutes = Mathf.FloorToInt((elapsedTime % 3600) / 60);
         int seconds = Mathf.FloorToInt(elapsedTime % 60);
@@ -29,18 +33,25 @@ public class Timer : MonoBehaviour
         }
     }
 
+    public void SubtractTime(float seconds)
+    {
+        elapsedTime = Mathf.Max(0, elapsedTime - seconds);
+        UpdateTimerDisplay(); 
+        Debug.Log($"Time subtracted. New elapsed time: {elapsedTime}");
+    }
+
     public void StopTimer()
     {
-        enabled = false;  
+        enabled = false;
     }
 
     public void ResetTimer()
     {
         elapsedTime = 0f;
-        enabled = true;  
+        enabled = true;
         if (timerText != null)
         {
-            timerText.text = "00 : 00 : 00";  
+            timerText.text = "00 : 00 : 00";
         }
         else
         {

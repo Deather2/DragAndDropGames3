@@ -406,6 +406,7 @@ MonoBehaviour:
   timeText3: {fileID: 1135499836}
   winMusic: {fileID: 2079888255}
   winSound: {fileID: 8300000, guid: bc0ff8230c0f1ae4bb6bbf9b578070cd, type: 3}
+  liveTimerText: {fileID: 767025447}
   timer: 0
   finished: 0
 --- !u!1 &135029527
@@ -1845,7 +1846,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &919454718
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2129,7 +2130,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -100}
+  m_AnchoredPosition: {x: 0, y: 50}
   m_SizeDelta: {x: 110, y: 110}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1042064548
@@ -4201,7 +4202,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1874155754
 RectTransform:
   m_ObjectHideFlags: 0

@@ -108,21 +108,6 @@ public class InterstitialAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsSh
         if (showCompletionState == UnityAdsShowCompletionState.COMPLETED)
         {
             Debug.Log("Interstitial ad watched completely!");
-
-            string scene = SceneManager.GetActiveScene().name;
-
-            if (scene == rewardSceneName)
-            {
-                StartCoroutine(SlowDownTimeTemporarily(30f));
-            }
-            else if (scene == "HanojasTornis")
-            {
-                StartCoroutine(SlowDownTimeTemporarily(30f));
-            }
-            else
-            {
-                Debug.Log("Not a reward scene, no time slowdown");
-            }
         }
         else if (showCompletionState == UnityAdsShowCompletionState.SKIPPED)
         {

@@ -57,10 +57,7 @@ public class AdManager : MonoBehaviour
             rewardedAds.LoadAd();
         }
 
-        if (!turnOffBannerAd)
-        {
-            bannerAd.LoadBanner();
-        }
+        
     }
 
     private void OnEnable()
@@ -87,21 +84,24 @@ public class AdManager : MonoBehaviour
         {
             if (bannerAd != null)
             {
-                bannerAd.HideBannerAd();
+                bannerAd.ShowBanner();   
             }
         }
+        else
+        {
+            if (bannerAd != null)
+            {
+                bannerAd.HideBanner();   
+            }
+        }
+
 
         if (rewardedAdButton != null && rewardedAds != null)
         {
             rewardedAds.SetButton(rewardedAdButton);
         }
 
-        Button bannerButton = GameObject.FindGameObjectWithTag("BannerButton")?.GetComponent<Button>();
-        if(bannerAd != null && bannerButton != null)
-        {
-            bannerAd.SetButton(bannerButton);
-            bannerAd.LoadBanner();
-        }
+        
 
         if (isFirstLaunch)
         {

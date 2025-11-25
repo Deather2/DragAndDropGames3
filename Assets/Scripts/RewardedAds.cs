@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
@@ -12,7 +13,6 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
 
     [SerializeField] Button _rewardedAdButton;
     public FlyingObjectManager flyingObjectManager;
-
 
     private void Awake()
     {
@@ -78,33 +78,74 @@ public class RewardedAds : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowLi
         if (placementId.Equals(_adUnitId) && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             Debug.Log("Rewarded ad completed!");
-
             string scene = SceneManager.GetActiveScene().name;
-
             if (scene == "CityScene")
             {
                 flyingObjectManager.DestroyAllFlyingObjects();
             }
             else if (scene == "HanojasTornis")
             {
+                Timer timer = FindFirstObjectByType<Timer>();
+                if (timer != null)
+                {
+                    timer.SubtractTime(10f);
+                    Debug.Log("Reward applied: -10 seconds from timer");
+                }
+                else
+                {
+                    Debug.LogWarning("Timer component not found on scene!");
+                }
+
                 if (WinManager.Instance != null)
                 {
                     WinManager.Instance.timer -= 10f;
-
                     if (WinManager.Instance.timer < 0)
                         WinManager.Instance.timer = 0;
-
-                    Debug.Log("Reward applied: -10 seconds in HanojasTornis");
                 }
             }
-
             _rewardedAdButton.interactable = false;
             StartCoroutine(WaitAndLoad(10f));
         }
-
         Time.timeScale = 1f;
     }
 
+    private void UpdateTimerUI()
+    {
+        if (WinManager.Instance == null) return;
+
+        // Ищем объект по имени "Timer"
+        GameObject timerObject = GameObject.Find("Timer");
+
+        if (timerObject == null)
+        {
+            Debug.LogWarning("Timer object not found by name 'Timer'");
+            return;
+        }
+
+        int minutes = Mathf.FloorToInt(WinManager.Instance.timer / 60);
+        int seconds = Mathf.FloorToInt(WinManager.Instance.timer % 60);
+        string timeString = string.Format("{0:00}:{1:00}", minutes, seconds);
+
+        // Пробуем найти обычный Text компонент
+        Text timerText = timerObject.GetComponent<Text>();
+        if (timerText != null)
+        {
+            timerText.text = timeString;
+            Debug.Log($"Timer UI updated (Text): {timeString}");
+            return;
+        }
+
+        // Пробуем найти TextMeshProUGUI компонент
+        TMPro.TextMeshProUGUI timerTextTMP = timerObject.GetComponent<TMPro.TextMeshProUGUI>();
+        if (timerTextTMP != null)
+        {
+            timerTextTMP.text = timeString;
+            Debug.Log($"Timer UI updated (TMP): {timeString}");
+            return;
+        }
+
+        Debug.LogWarning("Timer object found but has no Text or TextMeshProUGUI component!");
+    }
 
     public void SetButton(Button button)
     {
