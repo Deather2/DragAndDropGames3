@@ -4,14 +4,14 @@ using System.Collections.Generic;
 public class BlockSpawner : MonoBehaviour
 {
     [System.Serializable]
-    public class Tower
+    public class TowerSlot   
     {
-        public Transform floor; 
+        public Transform floor;     
         public Transform snapPoint; 
     }
 
-    public Tower[] towers; 
-    public GameObject[] blocks; 
+    public TowerSlot[] towers;      
+    public GameObject[] blocks;     
 
     void Start()
     {
@@ -25,14 +25,33 @@ public class BlockSpawner : MonoBehaviour
         while (blockPool.Count > 0)
         {
             int bIndex = Random.Range(0, blockPool.Count);
-            GameObject block = blockPool[bIndex];
+            GameObject blockPrefab = blockPool[bIndex];
             blockPool.RemoveAt(bIndex);
 
             int tIndex = Random.Range(0, towers.Length);
-            Tower tower = towers[tIndex];
+            TowerSlot slot = towers[tIndex];
 
-            Vector3 spawnPos = tower.snapPoint.position + new Vector3(0, 2f, 0); 
-            Instantiate(block, spawnPos, Quaternion.identity);
+            Vector3 spawnPos = slot.snapPoint.position + new Vector3(0, 2f, 0);
+            GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
+
+            Block block = newBlock.GetComponent<Block>();
+            if (block != null)
+            {
+                Tower towerComponent = slot.floor.GetComponentInParent<Tower>();
+                if (towerComponent != null)
+                {
+                    block.currentTower = towerComponent;
+                    towerComponent.blocks.Add(block);
+                }
+                else
+                {
+                    Debug.LogWarning("No Tower component found above floor: " + slot.floor.name);
+                }
+            }
+            else
+            {
+                Debug.LogWarning("Spawned object has no Block component: " + newBlock.name);
+            }
         }
     }
 }
